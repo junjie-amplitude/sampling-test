@@ -306,49 +306,6 @@ class xxHashBenchmark:
 
         return results
 
-    def test_sampling_rate(self, timestamps: List[int], sample_rate: float) -> SamplingResult:
-        """
-        Test sampling at a specific rate (legacy method for compatibility).
-
-        Args:
-            timestamps: List of Unix timestamps to test
-            sample_rate: Sample rate (0.1 for 10%, 0.2 for 20%, etc.)
-
-        Returns:
-            SamplingResult with test results
-        """
-        xxhash32_values, splitmix32_values, custom_hash_values = self.compute_hash_values(timestamps)
-        threshold = int(sample_rate * self.modulo)
-
-        xxhash32_count = sum(1 for hash_val in xxhash32_values if hash_val < threshold)
-        splitmix32_count = sum(1 for hash_val in splitmix32_values if hash_val < threshold)
-        custom_count = sum(1 for hash_val in custom_hash_values if hash_val < threshold)
-
-        expected_count = int(len(timestamps) * sample_rate)
-
-        difference_xxhash32 = xxhash32_count - expected_count
-        difference_splitmix32 = splitmix32_count - expected_count
-        difference_custom = custom_count - expected_count
-
-        percentage_error_xxhash32 = (difference_xxhash32 / expected_count) * 100 if expected_count > 0 else 0
-        percentage_error_splitmix32 = (difference_splitmix32 / expected_count) * 100 if expected_count > 0 else 0
-        percentage_error_custom = (difference_custom / expected_count) * 100 if expected_count > 0 else 0
-
-        return SamplingResult(
-            sample_rate=sample_rate,
-            expected_count=expected_count,
-            actual_count_xxhash32=xxhash32_count,
-            actual_count_splitmix32=splitmix32_count,
-            actual_count_custom=custom_count,
-            difference_xxhash32=difference_xxhash32,
-            difference_splitmix32=difference_splitmix32,
-            difference_custom=difference_custom,
-            percentage_error_xxhash32=percentage_error_xxhash32,
-            percentage_error_splitmix32=percentage_error_splitmix32,
-            percentage_error_custom=percentage_error_custom
-        )
-
-
     def run_benchmark(self) -> List[DateRangeResult]:
         """
         Run the complete benchmark for the specified date range.
