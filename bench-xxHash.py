@@ -20,6 +20,10 @@ import multiprocessing as mp
 from typing import List, Tuple, Dict
 from dataclasses import dataclass
 
+# Configuration - modify these values as needed
+START_DATE = "2025-06-02"  # Start date in YYYY-MM-DD format
+END_DATE = "2025-06-02"    # End date in YYYY-MM-DD format
+SAMPLE_INTERVAL = 1     # Sample every 1ms
 
 def splitmix32(x: int) -> int:
     """
@@ -539,12 +543,6 @@ class xxHashBenchmark:
 
 def main():
     """Main function to run the benchmark with configurable parameters."""
-
-    # Configuration - modify these values as needed
-    START_DATE = "2025-06-02"  # Start date in YYYY-MM-DD format
-    END_DATE = "2025-06-02"    # End date in YYYY-MM-DD format
-    SAMPLE_INTERVAL = 1     # Sample every 1000ms (1 second)
-
     print("xxHash32 vs SplitMix32 vs CustomHash Sampling Benchmark")
     print("=" * 50)
     print(f"Configuration:")
